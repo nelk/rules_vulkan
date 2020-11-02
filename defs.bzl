@@ -26,15 +26,14 @@ def _SpvasmOutput(srcs):
 
 def _shader_binary(ctx):
     spvOut = ctx.actions.declare_file(ctx.attr.name + ".spv")
-    shaderStage = ''
 
     glslcArgs = []
 
     if ctx.attr.stage:
         glslcArgs.append("-fshader-stage=" + ctx.attr.stage)
 
-    for src in ctx.files.srcs:
-        glslcArgs.append(src.path)
+    glslcArgs.append('-c')
+    glslcArgs.append(ctx.file.entry_point.path)
 
     glslcArgs.append('-o')
     glslcArgs.append(spvOut.path)
@@ -51,6 +50,10 @@ def _shader_binary(ctx):
 shader_binary = rule(
     implementation = _shader_binary,
     attrs = {
+        "entry_point": attr.label(
+            mandatory = True,
+            allow_single_file = True,
+        ),
         "srcs": attr.label_list(
             mandatory = True,
             allow_files = _shader_file_extensions,
