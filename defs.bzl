@@ -31,7 +31,7 @@ def _shader_binary(ctx):
     glslcArgs = []
 
     if ctx.attr.stage:
-        glslcArgs.append("-shader-stage=" + ctx.attr.stage)
+        glslcArgs.append("-fshader-stage=" + ctx.attr.stage)
 
     for src in ctx.files.srcs:
         glslcArgs.append(src.path)
