@@ -45,7 +45,12 @@ def _shader_binary(ctx):
         arguments = glslcArgs,
     )
 
-    return DefaultInfo(files = depset([spvOut]))
+    runfiles = ctx.runfiles(
+      files = [spvOut],
+      transitive_files = depset([spvOut]),
+    )
+
+    return DefaultInfo(files = depset([spvOut]), runfiles = runfiles)
 
 shader_binary = rule(
     implementation = _shader_binary,
